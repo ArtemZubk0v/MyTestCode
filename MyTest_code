@@ -8,12 +8,13 @@ namespace UnitTestProject1
     {
         [TestMethod]
         //сравнение чисел текущего(Cur) элемента кольца и другого элемента того же класса Element при равных значениях; 
-        public void EaseEquals_With_Same_Number_Are_Numbers_Equals()
+        public void EaseEquals_With_Same_Number_Are_Numbers_Equal()
         {
             //Arrange
             double a = 1;
             double b = 1;
             Ring myring = new Ring();
+            myring.Cur = new Ring.Element();
             Ring.Element second = new Ring.Element();
             bool expected = true;
             //Act
@@ -21,17 +22,18 @@ namespace UnitTestProject1
             second.number = b;
             bool actual = myring.EaseEquals(second);
             //Assert
-            Assert.AreEqual(expected, actual,"Numbers are equals");
+            Assert.AreEqual(expected, actual,"Numbers are equal");
         }
-        [TestMethod]
+       [TestMethod]
         //сравнение чисел текущего(Cur) элемента кольца и другого элемента того же класса Element при неравных значениях; 
 
-        public void EaseEquals_With_Different_Number_Are_Not_Numbers_Equals()
+        public void EaseEquals_With_Different_Number_Are_Not_Numbers_Equal()
         {
             //Arrange
             double a = 2;
             double b = 7;
             Ring myring = new Ring();
+            myring.Cur = new Ring.Element();
             Ring.Element second = new Ring.Element();
             bool expected = false;
             //Act
@@ -39,7 +41,7 @@ namespace UnitTestProject1
             second.number = b;
             bool actual = myring.EaseEquals(second);
             //Assert
-            Assert.AreEqual(expected, actual, "Numbers are not equals");
+            Assert.AreEqual(expected, actual, "Numbers are not equal");
         }
         [TestMethod]
         //проверка на правильность записи элемента в кольцо
@@ -89,5 +91,98 @@ namespace UnitTestProject1
             //Assert
             Assert.AreEqual(second, myring.Cur, "Current pointer has moved to the left");
         }
+
+        [TestMethod]
+        //сравнение чисел при том, что головка(Cur) указывает на один из элементов
+        public void DiffEquals_Cur_points_to_elem_Not_equal()
+        {
+            //Arrange
+            Ring.Element first = new Ring.Element();
+            first.number = 1;
+            Ring.Element second = new Ring.Element();
+            second.number = 1;
+            Ring myring = new Ring();
+            myring.Cur = first;
+            bool expected = false;
+            //Act
+            bool actual = myring.DiffEquals(first, second);
+            //Assert
+            Assert.AreEqual(expected, actual, "They are not equal");
+        }
+        [TestMethod]
+        //сравнение одинаковых чисел при том, что головка(Cur) не указывает ни на один из элементов
+        public void DiffEquals_Numbers_are_sameANDcur_does_not_point_to_elem_Numbers_are_Equal()
+        {
+            //Arrange
+            Ring.Element first = new Ring.Element();
+            Ring.Element second = new Ring.Element();
+            double a = 1;
+            double b = 1;
+            Ring myring = new Ring();
+            bool expected = true;
+            //Act
+            first.number = a;
+            second.number = b;
+            bool actual = myring.DiffEquals(first, second);
+            //Assert
+            Assert.AreEqual(expected, actual, "They are equal");
+        }
+        [TestMethod]
+        //сравнение разных чисел при том, что головка(Cur) не указывает ни на один из элементов
+        public void DiffEquals_Numbers_are_differentANDcur_does_not_point_to_elem_Numbers_are_Equal()
+        {
+            //Arrange
+            Ring.Element first = new Ring.Element();
+            Ring.Element second = new Ring.Element();
+            double a = 1;
+            double b = 2.2;
+            Ring myring = new Ring();
+            bool expected = true;
+            //Act
+            first.number = a;
+            second.number = b;
+            bool actual = myring.DiffEquals(first, second);
+            //Assert
+            Assert.AreEqual(expected, actual, "They are not equal");
+        }
+        [TestMethod]
+        //проверка на правильность считывания элемента, без его извлечения
+        public void Read_CurrElement_Is_got_right()
+        {
+            //Arrange
+            Ring myring = new Ring();
+            myring.Cur = new Ring.Element();
+            //Act
+            Ring.Element x = myring.Read();
+            //Assert
+            Assert.AreEqual(myring.Cur, x, "It is read right");
+        }
+        [TestMethod]
+        //проверка на правильность считывания элемента, при том, что он извлекается
+        public void ReadAndRetrive_retrived_currElement_Is_got_right()
+        {
+            //Arrange
+            Ring myring = new Ring();
+            Ring.Element myelem = new Ring.Element();
+            //Act
+            myring.Cur = myelem;
+            Ring.Element x = myring.ReadAndRetrive();
+            //Assert
+            Assert.AreEqual(myelem, x, "It is read right");
+        }
+        [TestMethod]
+        //проверка на то, что элемент извлекся
+        public void ReadAndRetrive_retrived_currElement_Is_retrived()
+        {
+            //Arrange
+            Ring myring = new Ring();
+            Ring.Element myelem = new Ring.Element();
+            //Act
+            myring.Cur = myelem;
+            Ring.Element x = myring.ReadAndRetrive();
+            //Assert
+            Assert.AreNotEqual(myring.Cur, myelem, "Current element is retrived");
+        }
+
     }
 }
