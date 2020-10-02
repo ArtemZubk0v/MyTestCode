@@ -137,7 +137,7 @@ namespace UnitTestProject1
             double a = 1;
             double b = 2.2;
             Ring myring = new Ring();
-            bool expected = true;
+            bool expected = false;
             //Act
             first.number = a;
             second.number = b;
