@@ -1,0 +1,160 @@
+    public class Ring
+    {
+        public class Element
+        {
+            public double number;
+            public Element next;
+            public Element previous;
+            public int key;
+        }
+        public Element Cur { get; set; }
+        public Ring()
+        {
+            Cur = null;
+        }
+        public Ring(double[] arr)
+        {
+            foreach(double num in arr)
+            {
+                Add(num);
+            }
+        }
+        public Ring(Ring myRing)
+        {
+            Cur = null;
+            Element myElement = myRing.Cur;
+            while(myRing.Cur!=null)
+            {
+                Add(myRing.Cur.number);
+                myRing.Right();
+                if (myRing.Cur == myElement)
+                    break;
+            }
+        }
+        public double Input()
+        {
+            Console.Write("Введите число: ");
+            double num = Convert.ToDouble(Console.ReadLine());
+            return num;
+        }
+        public void Output()
+        {
+            Console.WriteLine("Данное число с индексом {0} равно: {1}", Cur.key, Cur.number);
+        }
+        public double Access()
+        {
+            
+            Element cur1 = Cur;
+            int maxi=-1;
+            while (cur1.key>maxi)
+            {
+                maxi = cur1.key;
+                cur1 = cur1.next;
+            }
+            int mykey;
+            do
+            {
+                Console.Write("Введите действительный индекс числа в диапазоне от 0 до {0}: ",maxi);
+                mykey = Convert.ToInt32(Console.ReadLine());
+
+            } while (mykey<0 || mykey>maxi);
+            cur1 = Cur;
+            do
+            {
+                if (mykey == cur1.key)
+                    break;
+                cur1 = cur1.next;
+            } while (cur1 != Cur || cur1 !=null);
+            return cur1.number;
+            
+        }
+        public void Add(double num)
+        {
+            if(Cur == null)
+            {
+                Element first = new Element();
+                Cur = first;
+                Cur.number = num;
+                Cur.next = null;
+                Cur.previous = null;
+                Cur.key = 0;
+            }
+            else 
+            {
+                Element myElement = new Element();
+                if(Cur.next == null)
+                {
+                    Cur.next = myElement;
+                    Cur.previous = myElement;
+                    myElement.next = Cur;
+                    myElement.previous = Cur;
+                }
+                else
+                {
+
+                    myElement.next = Cur.next;
+                    myElement.previous = Cur;
+                    Cur.next.previous = myElement;
+                    Cur.next = myElement;
+                }
+                Cur = myElement;
+                Cur.number = num;
+                Cur.key = Cur.previous.key + 1;
+                Element cur1 = Cur;
+                while(cur1.key <= cur1.next.key)
+                {
+                    cur1.next.key += 1;
+                    cur1 = cur1.next;
+                }
+            }
+        }
+        public void Right()
+        {
+            if (Cur.next != null)
+                Cur = Cur.next;
+        }
+        public void Left()
+        {
+            if (Cur.previous != null)
+                Cur = Cur.previous;
+        }
+        public bool EaseEquals(Element obj)
+        {
+            return Cur.number == obj.number;
+        }
+        public bool DiffEquals(Element obj, Element obj1)
+        {
+            if (Cur == obj || Cur == obj1 || obj.number != obj1.number)
+                return false;
+            else
+                return true;
+        }
+        public Element Read()
+        {
+            return Cur;
+        }
+        public Element ReadAndRetrive()
+        {
+            Element el = Cur;
+            if(Cur.next != Cur.previous)
+            {
+                Cur.previous.next = Cur.next;
+                Cur.next.previous = Cur.previous;
+                Cur = Cur.previous;
+            }
+            else
+            {
+                if(Cur.previous != null)
+                {
+                    Cur = Cur.previous;
+                    Cur.next = null;
+                    Cur.previous = null;
+                }
+                else
+                {
+                    Cur = null;
+                }
+            }
+            return el;
+        }
+    }
